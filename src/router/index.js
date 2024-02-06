@@ -1,25 +1,54 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginVue from '@/components/Login.vue';
+import CadastroVue from '@/components/Cadastro.vue';
+import DashboardVue from '@/components/Dashboard.vue';
+import ConsultaVue from '@/components/Consulta.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+	{
+		path: '/',
+		name: 'login',
+		component: LoginVue,
+	},
+	{
+		path: '/cadastro',
+		name: 'cadastro',
+		component: CadastroVue,
+	},
+	{
+		path: '/dashboard',
+		name: 'dashboard',
+		component: DashboardVue,
+		meta: { requiresAuth: true },
+	},
+	{
+		path: '/consulta',
+		name: 'consulta',
+		component: ConsultaVue,
+		meta: { requiresAuth: true },
+	},
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+	history: createWebHistory(process.env.BASE_URL),
+	routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+	if (to.matched.some((record) => record.meta.requiresAuth)) {
+		const token = localStorage.getItem('access_token');
+
+		if (!token) {
+			alert('Você não está autenticado!');
+			setTimeout(() => {
+				next({ name: 'login' });
+			}, 2000);
+		} else {
+			next();
+		}
+	} else {
+		next();
+	}
+});
+
+export default router;
