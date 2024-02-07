@@ -13,7 +13,10 @@
 							v-model="email"
 						></v-text-field>
 						<v-text-field
+							type="password"
 							label="Password"
+							@click:append-inner="revealPassword"
+							append-inner-icon="mdi-eye-off-outline"
 							variant="solo"
 							class="w-50"
 							v-model="password"
