@@ -6,24 +6,34 @@
 				label="Nome"
 				prepend-icon="mdi-account"
 				variant="underlined"
+				:rules="[rules.required]"
+				@keydown.enter="cadastrar()"
 				v-model="name"
 			></v-text-field>
 			<v-text-field
 				label="Preço"
+				prefix="R$"
+				model-value="10.00"
 				prepend-icon="mdi-currency-usd"
 				variant="underlined"
+				:rules="[rules.required, rules.isANumber]"
+				@keydown.enter="cadastrar()"
 				v-model="price"
 			></v-text-field>
 			<v-text-field
 				label="Cor"
 				prepend-icon="mdi-palette"
 				variant="underlined"
+				:rules="[rules.required]"
+				@keydown.enter="cadastrar()"
 				v-model="color"
 			></v-text-field>
 			<v-text-field
 				label="Marca"
 				prepend-icon="mdi-domain"
 				variant="underlined"
+				:rules="[rules.required]"
+				@keydown.enter="cadastrar()"
 				v-model="brand"
 			></v-text-field>
 			<v-row class="mt-4 ml-10">
@@ -42,9 +52,15 @@ export default {
 	data() {
 		return {
 			name: '',
-			price: '',
+			price: null,
 			color: '',
 			brand: '',
+			rules: {
+				required: (value) => !!value || 'O campo é obrigatório',
+				isANumber: (value) =>
+					!!Number.isFinite(parseFloat(value)) ||
+					'O preço tem que ser um número',
+			},
 		};
 	},
 	components: {
