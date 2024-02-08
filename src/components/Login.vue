@@ -36,14 +36,6 @@
 							Não Tem Uma Conta?
 							<router-link to="/cadastro">Inscrever-se</router-link>
 						</h4>
-						<v-row class="w-50 d-flex flex-column align-center justify-center"
-							><v-col><h3 class="text-center">Logar Com</h3></v-col>
-							<v-col class="d-flex align-center justify-center"
-								><v-icon size="">mdi-facebook</v-icon>
-								<v-icon>mdi-google</v-icon>
-								<v-icon>mdi-apple</v-icon></v-col
-							></v-row
-						>
 					</v-container></v-col
 				>
 			</v-row></v-container

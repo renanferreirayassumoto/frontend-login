@@ -1,7 +1,11 @@
 <template>
 	<v-app :theme="toggleTheme ? 'dark' : 'true'">
-		<HeaderDashboardVue v-show="showHeader" @toggle-theme="toggleThemeMode" />
 		<v-main>
+			<HeaderDashboardVue
+				v-show="showHeader"
+				@toggle-theme="toggleThemeMode"
+				@logout="handleLogout"
+			/>
 			<router-view />
 		</v-main>
 	</v-app>
@@ -23,6 +27,9 @@ export default {
 	methods: {
 		toggleThemeMode() {
 			this.toggleTheme = !this.toggleTheme;
+		},
+		handleLogout() {
+			this.showHeader = false;
 		},
 	},
 	watch: {
