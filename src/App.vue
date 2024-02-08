@@ -1,5 +1,5 @@
 <template>
-	<v-app :theme="toggleTheme ? 'dark' : 'true'">
+	<v-app :theme="toggleTheme ? 'dark' : 'true'" :key="$route.fullPath">
 		<v-main>
 			<HeaderDashboardVue
 				v-show="showHeader"
@@ -12,30 +12,30 @@
 </template>
 
 <script>
-import HeaderDashboardVue from './components/HeaderDashboard.vue';
-export default {
-	name: 'App',
-	data() {
-		return {
-			showHeader: true,
-			toggleTheme: false,
-		};
-	},
-	components: {
-		HeaderDashboardVue,
-	},
-	methods: {
-		toggleThemeMode() {
-			this.toggleTheme = !this.toggleTheme;
+	import HeaderDashboardVue from './components/HeaderDashboard.vue';
+	export default {
+		name: 'App',
+		data() {
+			return {
+				showHeader: true,
+				toggleTheme: false,
+			};
 		},
-		handleLogout() {
-			this.showHeader = false;
+		components: {
+			HeaderDashboardVue,
 		},
-	},
-	watch: {
-		$route(to, from) {
-			this.showHeader = to.path !== '/';
+		methods: {
+			toggleThemeMode() {
+				this.toggleTheme = !this.toggleTheme;
+			},
+			handleLogout() {
+				this.showHeader = false;
+			},
 		},
-	},
-};
+		watch: {
+			$route(to, from) {
+				this.showHeader = to.path !== '/';
+			},
+		},
+	};
 </script>
