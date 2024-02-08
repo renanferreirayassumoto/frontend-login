@@ -6,8 +6,9 @@
 		>
 		<v-btn prepend-icon="mdi-magnify"
 			><router-link to="/consulta">Consulta</router-link></v-btn
-		></v-app-bar
-	>
+		>
+		<v-btn icon="mdi-brightness-6" @click="$emit('toggle-theme')"></v-btn>
+	</v-app-bar>
 </template>
 
 <script>
@@ -16,4 +17,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+a {
+	text-decoration: none;
+}
+</style>

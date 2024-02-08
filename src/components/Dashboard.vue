@@ -1,7 +1,5 @@
 <template>
 	<div class="d-flex align-center justify-center w-100 h-100">
-		<HeaderDashboardVue />
-
 		<v-form id="formularioCadastro" class="pa-10 ma-10 w-75">
 			<p class="text-h4 text-center mb-4">Cadastro de Produtos</p>
 			<v-text-field

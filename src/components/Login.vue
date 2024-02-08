@@ -13,10 +13,10 @@
 							v-model="email"
 						></v-text-field>
 						<v-text-field
-							type="password"
+							:type="marker ? 'password' : 'text'"
 							label="Password"
+							:append-inner-icon="marker ? 'mdi-eye-off' : 'mdi-eye'"
 							@click:append-inner="revealPassword"
-							append-inner-icon="mdi-eye-off-outline"
 							variant="solo"
 							class="w-50"
 							v-model="password"
@@ -60,6 +60,7 @@ export default {
 		return {
 			email: '',
 			password: '',
+			marker: true,
 		};
 	},
 	methods: {
@@ -81,6 +82,9 @@ export default {
 				}
 				console.error(err);
 			}
+		},
+		revealPassword() {
+			this.marker = !this.marker;
 		},
 	},
 };

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<HeaderDashboardVue />
 		<v-table class="mx-10 mt-6">
 			<thead>
 				<tr>
@@ -18,10 +17,16 @@
 					<td>{{ item.color }}</td>
 					<td>{{ item.brand }}</td>
 					<td>
-						<v-btn @click="editar(item)" flat>
+						<v-btn
+							@click="editar(item)"
+							flat
+							color="blue"
+							class="mr-2"
+							size="small"
+						>
 							<v-icon>mdi-pencil</v-icon>
 						</v-btn>
-						<v-btn @click="deletar(item.id)" flat>
+						<v-btn @click="deletar(item.id)" flat color="red" size="small">
 							<v-icon>mdi-delete</v-icon>
 						</v-btn>
 					</td>
