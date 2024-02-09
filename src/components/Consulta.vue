@@ -26,7 +26,12 @@
 						>
 							<v-icon>mdi-pencil</v-icon>
 						</v-btn>
-						<v-btn @click="deletar(item.id)" flat color="red" size="small">
+						<v-btn
+							@click="confirmarDelete(item.id)"
+							flat
+							color="red"
+							size="small"
+						>
 							<v-icon>mdi-delete</v-icon>
 						</v-btn>
 					</td>
@@ -64,74 +69,92 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+		<v-dialog v-model="showDeleteDialog" persistent
+			><v-card>
+				<v-card-title>Deletar Produto</v-card-title>
+				<v-card-text>Tem certeza que deseja excluir o produto?</v-card-text>
+				<v-card-actions>
+					<v-btn @click="deletar(deletedItemId)">Excluir</v-btn>
+					<v-btn @click="showDeleteDialog = false">Cancelar</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
 <script>
-import HeaderDashboardVue from './HeaderDashboard.vue';
-import axios from 'axios';
+	import HeaderDashboardVue from './HeaderDashboard.vue';
+	import axios from 'axios';
 
-export default {
-	components: {
-		HeaderDashboardVue,
-	},
-	data() {
-		return {
-			items: [],
-			showDialogEdit: false,
-			editedItem: { id: null, name: '', price: '', color: '', brand: '' },
-		};
-	},
-	mounted() {
-		this.fetchItems();
-	},
-	methods: {
-		fetchItems() {
-			axios
-				.get('http://localhost:3000/products')
-				.then((response) => {
-					this.items = response.data;
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	export default {
+		components: {
+			HeaderDashboardVue,
 		},
-		deletar(id) {
-			axios
-				.delete(`http://localhost:3000/products/${id}`)
-				.then(() => {
-					alert('Produto apagado com sucesso!');
-					this.fetchItems();
-				})
-				.catch((error) => {
-					console.error('Erro ao apagar o produto', error);
-				});
+		data() {
+			return {
+				items: [],
+				showDialogEdit: false,
+				showDeleteDialog: false,
+				editedItem: { id: null, name: '', price: '', color: '', brand: '' },
+			};
 		},
-		editar(item) {
-			this.editedItem = { ...item };
-			this.showDialogEdit = true;
+		mounted() {
+			this.fetchItems();
 		},
-		salvarEdicao() {
-			const { id, name, price, color, brand } = this.editedItem;
+		methods: {
+			fetchItems() {
+				axios
+					.get('http://localhost:3000/products')
+					.then((response) => {
+						this.items = response.data;
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+			},
+			confirmarDelete(id) {
+				this.deletedItemId = id;
+				this.showDeleteDialog = true;
+			},
+			deletar(id) {
+				axios
+					.delete(`http://localhost:3000/products/${id}`)
+					.then(() => {
+						alert('Produto apagado com sucesso!');
+						this.fetchItems();
+					})
+					.catch((error) => {
+						console.error('Erro ao apagar o produto', error);
+					});
+				this.showDeleteDialog = false;
+			},
+			editar(item) {
+				this.editedItem = { ...item };
+				this.showDialogEdit = true;
+			},
+			salvarEdicao() {
+				const priceAsNumber = Number(price);
 
-			axios
-				.patch(`http://localhost:3000/products/${id}`, {
-					name: name,
-					price: price,
-					color: color,
-					brand: brand,
-				})
-				.then(() => {
-					this.fetchItems();
-					this.showDialogEdit = false;
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-			this.showDialogEdit = false;
+				const { id, name, price, color, brand } = this.editedItem;
+
+				axios
+					.patch(`http://localhost:3000/products/${id}`, {
+						name: name,
+						price: priceAsNumber,
+						color: color,
+						brand: brand,
+					})
+					.then(() => {
+						this.fetchItems();
+						this.showDialogEdit = false;
+					})
+					.catch((error) => {
+						console.error(error);
+					});
+				this.showDialogEdit = false;
+			},
 		},
-	},
-};
+	};
 </script>
 
 <style></style>
