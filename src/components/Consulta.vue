@@ -133,9 +133,8 @@
 				this.showDialogEdit = true;
 			},
 			salvarEdicao() {
-				const priceAsNumber = Number(price);
-
 				const { id, name, price, color, brand } = this.editedItem;
+				const priceAsNumber = Number(price);
 
 				axios
 					.patch(`http://localhost:3000/products/${id}`, {
