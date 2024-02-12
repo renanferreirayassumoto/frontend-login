@@ -3,9 +3,6 @@
 		<v-app-bar>
 			<v-btn icon="mdi-menu" @click="toggleDrawerMethod"></v-btn>
 			<v-app-bar-title>Sistema de Produtos</v-app-bar-title>
-			<v-btn prepend-icon="mdi-account"
-				><router-link to="/dashboard">Cadastro</router-link></v-btn
-			>
 			<v-btn prepend-icon="mdi-magnify"
 				><router-link to="/consulta">Consulta</router-link></v-btn
 			>

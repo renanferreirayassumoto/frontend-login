@@ -1,6 +1,12 @@
 <template>
 	<div>
-		<v-table class="mx-10 mt-6">
+		<v-row class="d-flex align-center mx-10 py-4">
+			<v-col cols="6" class="text-h5"> Listagem de Produtos </v-col>
+			<v-col cols="6" class="d-flex justify-end">
+				<v-btn @click="showCreateDialog = true">Criar Produto</v-btn>
+			</v-col>
+		</v-row>
+		<v-table class="mx-10">
 			<thead>
 				<tr>
 					<th class="text-left">Nome</th>
@@ -79,6 +85,21 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+		<v-dialog v-model="showCreateDialog" max-width="500px">
+			<v-card>
+				<v-card-title>Criar Produto</v-card-title>
+				<v-card-text>
+					<v-text-field v-model="newItem.name" label="Nome"></v-text-field>
+					<v-text-field v-model="newItem.price" label="Preço"></v-text-field>
+					<v-text-field v-model="newItem.color" label="Cor"></v-text-field>
+					<v-text-field v-model="newItem.brand" label="Marca"></v-text-field>
+				</v-card-text>
+				<v-card-actions>
+					<v-btn @click="cancelCreate">Cancelar</v-btn>
+					<v-btn @click="saveNewProduct">Salvar</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -96,6 +117,8 @@
 				showDialogEdit: false,
 				showDeleteDialog: false,
 				editedItem: { id: null, name: '', price: '', color: '', brand: '' },
+				showCreateDialog: false,
+				newItem: { name: '', price: '', color: '', brand: '' },
 			};
 		},
 		mounted() {
@@ -151,6 +174,37 @@
 						console.error(error);
 					});
 				this.showDialogEdit = false;
+			},
+			cancelCreate() {
+				this.showCreateDialog = false;
+				this.resetNewItem();
+			},
+
+			resetNewItem() {
+				this.newItem = { name: '', price: '', color: '', brand: '' };
+			},
+
+			saveNewProduct() {
+				const priceAsNumber = parseFloat(this.newItem.price);
+
+				const { name, price, color, brand } = this.newItem;
+
+				axios
+					.post('http://localhost:3000/products', {
+						name: name,
+						price: priceAsNumber,
+						color: color,
+						brand: brand,
+					})
+					.then(() => {
+						alert('Produto criado com sucesso!');
+						this.fetchItems();
+						this.showCreateDialog = false;
+						this.resetNewItem();
+					})
+					.catch((error) => {
+						console.error('Erro ao criar o produto', error);
+					});
 			},
 		},
 	};

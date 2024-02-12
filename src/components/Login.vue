@@ -70,7 +70,7 @@
 
 					const accessToken = response.data.access_token;
 					localStorage.setItem('access_token', accessToken);
-					this.$router.push('/dashboard');
+					this.$router.push('/consulta');
 				} catch (err) {
 					if (err.response && err.response.status === 401) {
 						alert('Email ou Senha inválidos');

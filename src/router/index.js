@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginVue from '@/components/Login.vue';
 import CadastroVue from '@/components/Cadastro.vue';
-import DashboardVue from '@/components/Dashboard.vue';
 import ConsultaVue from '@/components/Consulta.vue';
 
 const routes = [
@@ -14,12 +13,6 @@ const routes = [
 		path: '/cadastro',
 		name: 'cadastro',
 		component: CadastroVue,
-	},
-	{
-		path: '/dashboard',
-		name: 'dashboard',
-		component: DashboardVue,
-		meta: { requiresAuth: true },
 	},
 	{
 		path: '/consulta',
