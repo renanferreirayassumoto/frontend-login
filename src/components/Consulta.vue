@@ -3,7 +3,9 @@
 		<v-row class="d-flex align-center mx-10 py-4">
 			<v-col cols="6" class="text-h5"> Listagem de Produtos </v-col>
 			<v-col cols="6" class="d-flex justify-end">
-				<v-btn @click="showCreateDialog = true">Criar Produto</v-btn>
+				<v-btn @click="showCreateDialog = true" color="primary"
+					>Criar Produto</v-btn
+				>
 			</v-col>
 		</v-row>
 		<v-table class="mx-10">
