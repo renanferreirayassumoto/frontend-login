@@ -36,9 +36,11 @@
 							>Cadastrar</v-btn
 						>
 
-						<v-btn class="mt-4 py-6 d-flex align-center" color="blue"
-							><router-link to="/">Home</router-link></v-btn
-						>
+						<router-link to="/">
+							<v-btn class="mt-4 py-6 d-flex align-center" color="blue"
+								>Home</v-btn
+							>
+						</router-link>
 					</v-container></v-col
 				>
 			</v-row></v-container

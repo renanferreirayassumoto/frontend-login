@@ -3,9 +3,9 @@
 		<v-app-bar>
 			<v-btn icon="mdi-menu" @click="toggleDrawerMethod"></v-btn>
 			<v-app-bar-title>Sistema de Produtos</v-app-bar-title>
-			<v-btn prepend-icon="mdi-magnify"
-				><router-link to="/consulta">Consulta</router-link></v-btn
-			>
+			<router-link to="/consulta">
+				<v-btn prepend-icon="mdi-magnify">Consulta</v-btn>
+			</router-link>
 			<v-btn icon="mdi-brightness-6" @click="$emit('toggle-theme')"></v-btn>
 		</v-app-bar>
 		<v-navigation-drawer v-if="toggleDrawer" id="drawerLateral">

@@ -87,6 +87,8 @@ export default {
 			} catch (err) {
 				if (err.response && err.response.status === 401) {
 					this.showAlertErrorLogin = true;
+					this.email = '';
+					this.password = '';
 					setTimeout(() => {
 						this.showAlertErrorLogin = false;
 					}, 2500);
