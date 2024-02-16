@@ -23,58 +23,58 @@
 </template>
 
 <script>
-	import * as jsonwebtoken from 'jwt-decode';
-	import axios from 'axios';
+import * as jsonwebtoken from 'jwt-decode';
+import axios from 'axios';
 
-	export default {
-		name: 'HeaderComponent',
-		data() {
-			return {
-				toggleDrawer: false,
-				username: '',
-				email: '',
-			};
-		},
-		async mounted() {
-			const user = jsonwebtoken.jwtDecode(localStorage.getItem('access_token'));
+export default {
+	name: 'HeaderComponent',
+	data() {
+		return {
+			toggleDrawer: false,
+			username: '',
+			email: '',
+		};
+	},
+	async mounted() {
+		const user = jsonwebtoken.jwtDecode(localStorage.getItem('access_token'));
 
-			try {
-				const response = await axios.get(
-					`http://localhost:3000/users/${user.sub}`,
-					{
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-						},
-					}
-				);
+		try {
+			const response = await axios.get(
+				`http://localhost:3000/users/${user.sub}`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+					},
+				}
+			);
 
-				this.username = response.data.username;
-				this.email = response.data.email;
-			} catch (error) {
-				console.error('Erro ao buscar dados do usuário', error);
-			}
+			this.username = response.data.username;
+			this.email = response.data.email;
+		} catch (error) {
+			console.error('Erro ao buscar dados do usuário', error);
+		}
+	},
+	methods: {
+		toggleDrawerMethod() {
+			this.toggleDrawer = !this.toggleDrawer;
 		},
-		methods: {
-			toggleDrawerMethod() {
-				this.toggleDrawer = !this.toggleDrawer;
-			},
-			logout() {
-				localStorage.removeItem('access_token');
-				this.$router.push('/');
-				this.$emit('logout');
-			},
+		logout() {
+			localStorage.removeItem('access_token');
+			this.$router.push('/');
+			this.$emit('logout');
 		},
-	};
+	},
+};
 </script>
 
 <style>
-	a {
-		text-decoration: none;
-	}
+a {
+	text-decoration: none;
+}
 
-	.v-navigation-drawer__content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
+.v-navigation-drawer__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
 </style>

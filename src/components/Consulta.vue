@@ -80,7 +80,7 @@
 				<v-card-title>Deletar Produto</v-card-title>
 				<v-card-text>Tem certeza que deseja excluir o produto?</v-card-text>
 				<v-card-actions>
-					<v-btn @click="deletar(deletedItemId)">Excluir</v-btn>
+					<v-btn @click="deletar(deletedItemId)" color="red">Excluir</v-btn>
 					<v-btn @click="showDeleteDialog = false">Cancelar</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -100,114 +100,146 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+
+		<AlertComponentVue
+			id="alertCreatedComponent"
+			v-model="alertCreatedComponentConsulta"
+			type="success"
+			title="Produto criado com sucesso!"
+		/>
+
+		<AlertComponentVue
+			id="alertCreatedComponent"
+			v-model="alertDeletedComponentConsulta"
+			type="success"
+			title="Produto apagado com sucesso!"
+		/>
 	</div>
 </template>
 
 <script>
-	import HeaderDashboardVue from './HeaderDashboard.vue';
-	import axios from 'axios';
+import HeaderDashboardVue from './HeaderDashboard.vue';
+import axios from 'axios';
+import AlertComponentVue from './AlertComponent.vue';
 
-	export default {
-		components: {
-			HeaderDashboardVue,
+export default {
+	components: {
+		HeaderDashboardVue,
+		AlertComponentVue,
+	},
+	data() {
+		return {
+			items: [],
+			showDialogEdit: false,
+			showDeleteDialog: false,
+			editedItem: { id: null, name: '', price: '', color: '', brand: '' },
+			showCreateDialog: false,
+			newItem: { name: '', price: '', color: '', brand: '' },
+			alertCreatedComponentConsulta: false,
+			alertDeletedComponentConsulta: false,
+		};
+	},
+	mounted() {
+		this.fetchItems();
+	},
+	methods: {
+		fetchItems() {
+			axios
+				.get('http://localhost:3000/products')
+				.then((response) => {
+					this.items = response.data;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		},
-		data() {
-			return {
-				items: [],
-				showDialogEdit: false,
-				showDeleteDialog: false,
-				editedItem: { id: null, name: '', price: '', color: '', brand: '' },
-				showCreateDialog: false,
-				newItem: { name: '', price: '', color: '', brand: '' },
-			};
+		confirmarDelete(id) {
+			this.deletedItemId = id;
+			this.showDeleteDialog = true;
 		},
-		mounted() {
-			this.fetchItems();
+		deletar(id) {
+			axios
+				.delete(`http://localhost:3000/products/${id}`)
+				.then(() => {
+					this.alertDeletedComponentConsulta = true;
+					setTimeout(() => {
+						this.alertDeletedComponentConsulta = false;
+					}, 2500);
+					this.fetchItems();
+				})
+				.catch((error) => {
+					console.error('Erro ao apagar o produto', error);
+				});
+			this.showDeleteDialog = false;
 		},
-		methods: {
-			fetchItems() {
-				axios
-					.get('http://localhost:3000/products')
-					.then((response) => {
-						this.items = response.data;
-					})
-					.catch((error) => {
-						console.error(error);
-					});
-			},
-			confirmarDelete(id) {
-				this.deletedItemId = id;
-				this.showDeleteDialog = true;
-			},
-			deletar(id) {
-				axios
-					.delete(`http://localhost:3000/products/${id}`)
-					.then(() => {
-						alert('Produto apagado com sucesso!');
-						this.fetchItems();
-					})
-					.catch((error) => {
-						console.error('Erro ao apagar o produto', error);
-					});
-				this.showDeleteDialog = false;
-			},
-			editar(item) {
-				this.editedItem = { ...item };
-				this.showDialogEdit = true;
-			},
-			salvarEdicao() {
-				const { id, name, price, color, brand } = this.editedItem;
-				const priceAsNumber = Number(price);
-
-				axios
-					.patch(`http://localhost:3000/products/${id}`, {
-						name: name,
-						price: priceAsNumber,
-						color: color,
-						brand: brand,
-					})
-					.then(() => {
-						this.fetchItems();
-						this.showDialogEdit = false;
-					})
-					.catch((error) => {
-						console.error(error);
-					});
-				this.showDialogEdit = false;
-			},
-			cancelCreate() {
-				this.showCreateDialog = false;
-				this.resetNewItem();
-			},
-
-			resetNewItem() {
-				this.newItem = { name: '', price: '', color: '', brand: '' };
-			},
-
-			saveNewProduct() {
-				const priceAsNumber = parseFloat(this.newItem.price);
-
-				const { name, price, color, brand } = this.newItem;
-
-				axios
-					.post('http://localhost:3000/products', {
-						name: name,
-						price: priceAsNumber,
-						color: color,
-						brand: brand,
-					})
-					.then(() => {
-						alert('Produto criado com sucesso!');
-						this.fetchItems();
-						this.showCreateDialog = false;
-						this.resetNewItem();
-					})
-					.catch((error) => {
-						console.error('Erro ao criar o produto', error);
-					});
-			},
+		editar(item) {
+			this.editedItem = { ...item };
+			this.showDialogEdit = true;
 		},
-	};
+		salvarEdicao() {
+			const { id, name, price, color, brand } = this.editedItem;
+			const priceAsNumber = Number(price);
+
+			axios
+				.patch(`http://localhost:3000/products/${id}`, {
+					name: name,
+					price: priceAsNumber,
+					color: color,
+					brand: brand,
+				})
+				.then(() => {
+					this.fetchItems();
+					this.showDialogEdit = false;
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+			this.showDialogEdit = false;
+		},
+		cancelCreate() {
+			this.showCreateDialog = false;
+			this.resetNewItem();
+		},
+
+		resetNewItem() {
+			this.newItem = { name: '', price: '', color: '', brand: '' };
+		},
+
+		saveNewProduct() {
+			const priceAsNumber = parseFloat(this.newItem.price);
+
+			const { name, price, color, brand } = this.newItem;
+
+			axios
+				.post('http://localhost:3000/products', {
+					name: name,
+					price: priceAsNumber,
+					color: color,
+					brand: brand,
+				})
+				.then(() => {
+					this.alertCreatedComponentConsulta = true;
+					setTimeout(() => {
+						this.alertCreatedComponentConsulta = false;
+					}, 2500);
+					this.fetchItems();
+					this.showCreateDialog = false;
+					this.resetNewItem();
+				})
+				.catch((error) => {
+					console.error('Erro ao criar o produto', error);
+				});
+		},
+	},
+};
 </script>
 
-<style></style>
+<style>
+#alertCreatedComponent {
+	position: fixed;
+	top: 0;
+	z-index: 99999;
+	left: 50%;
+	transform: translateX(-50%);
+}
+</style>

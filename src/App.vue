@@ -12,30 +12,30 @@
 </template>
 
 <script>
-	import HeaderDashboardVue from './components/HeaderDashboard.vue';
-	export default {
-		name: 'App',
-		data() {
-			return {
-				showHeader: true,
-				toggleTheme: false,
-			};
+import HeaderDashboardVue from './components/HeaderDashboard.vue';
+export default {
+	name: 'App',
+	data() {
+		return {
+			showHeader: true,
+			toggleTheme: false,
+		};
+	},
+	components: {
+		HeaderDashboardVue,
+	},
+	methods: {
+		toggleThemeMode() {
+			this.toggleTheme = !this.toggleTheme;
 		},
-		components: {
-			HeaderDashboardVue,
+		handleLogout() {
+			this.showHeader = false;
 		},
-		methods: {
-			toggleThemeMode() {
-				this.toggleTheme = !this.toggleTheme;
-			},
-			handleLogout() {
-				this.showHeader = false;
-			},
+	},
+	watch: {
+		$route(to, from) {
+			this.showHeader = !['/', '/cadastro'].includes(to.path);
 		},
-		watch: {
-			$route(to, from) {
-				this.showHeader = to.path !== '/';
-			},
-		},
-	};
+	},
+};
 </script>

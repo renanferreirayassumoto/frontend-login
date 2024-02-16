@@ -24,6 +24,7 @@
 							label="Password"
 							variant="solo"
 							class="w-50"
+							type="password"
 							v-model="password"
 							:rules="[rules.required]"
 						></v-text-field>
@@ -34,18 +35,34 @@
 							@click="cadastrar()"
 							>Cadastrar</v-btn
 						>
+
+						<v-btn class="mt-4 py-6 d-flex align-center" color="blue"
+							><router-link to="/">Home</router-link></v-btn
+						>
 					</v-container></v-col
 				>
 			</v-row></v-container
 		>
+
+		<AlertComponentVue
+			id="alertComponent"
+			v-model="showCreatedDialog"
+			variant="outlined"
+			type="success"
+			title="Usuário criado com sucesso!"
+		/>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
+import AlertComponentVue from './AlertComponent.vue';
 
 export default {
 	name: 'CadastroComponent',
+	components: {
+		AlertComponentVue,
+	},
 	data() {
 		return {
 			username: '',
@@ -56,6 +73,7 @@ export default {
 				counter: (value) =>
 					value.length >= 5 || 'O campo deve ter no minímo 5 caracteres',
 			},
+			showCreatedDialog: false,
 		};
 	},
 	methods: {
@@ -67,15 +85,27 @@ export default {
 					password: this.password,
 				})
 				.then(() => {
-					alert('Cadastro criado com sucesso!');
+					this.showCreatedDialog = true;
+					return new Promise((resolve) => setTimeout(resolve, 2000));
+				})
+				.then(() => {
+					this.showCreatedDialog = false;
 					this.$router.push('/');
 				})
 				.catch((error) => {
-					console.error('Erro na criação do usuário');
+					console.error('Erro na criação do usuário: ', error);
 				});
 		},
 	},
 };
 </script>
 
-<style></style>
+<style>
+#alertComponent {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+}
+</style>

@@ -42,49 +42,63 @@
 				>
 			</v-row>
 		</v-container>
+
+		<AlertComponentVue
+			id="alertComponent"
+			v-model="showAlertErrorLogin"
+			variant="outlined"
+			type="error"
+			title="Email ou senha incorretos!"
+		/>
 	</div>
 </template>
 
 <script>
-	import axios from 'axios';
+import axios from 'axios';
+import AlertComponentVue from './AlertComponent.vue';
 
-	export default {
-		name: 'LoginComponent',
-		data() {
-			return {
-				email: '',
-				password: '',
-				marker: true,
-				rules: {
-					required: (value) => !!value || 'O campo é obrigatório',
-				},
-			};
-		},
-		methods: {
-			async login() {
-				try {
-					const response = await axios.post('http://localhost:3000/login', {
-						email: this.email,
-						password: this.password,
-					});
+export default {
+	name: 'LoginComponent',
+	components: {
+		AlertComponentVue,
+	},
+	data() {
+		return {
+			email: '',
+			password: '',
+			marker: true,
+			rules: {
+				required: (value) => !!value || 'O campo é obrigatório',
+			},
+			showAlertErrorLogin: false,
+		};
+	},
+	methods: {
+		async login() {
+			try {
+				const response = await axios.post('http://localhost:3000/login', {
+					email: this.email,
+					password: this.password,
+				});
 
-					const accessToken = response.data.access_token;
-					localStorage.setItem('access_token', accessToken);
-					this.$router.push('/consulta');
-				} catch (err) {
-					if (err.response && err.response.status === 401) {
-						alert('Email ou Senha inválidos');
-						this.email = '';
-						this.password = '';
-					}
-					console.error(err);
+				const accessToken = response.data.access_token;
+				localStorage.setItem('access_token', accessToken);
+				this.$router.push('/consulta');
+			} catch (err) {
+				if (err.response && err.response.status === 401) {
+					this.showAlertErrorLogin = true;
+					setTimeout(() => {
+						this.showAlertErrorLogin = false;
+					}, 2500);
 				}
-			},
-			revealPassword() {
-				this.marker = !this.marker;
-			},
+				console.error(err);
+			}
 		},
-	};
+		revealPassword() {
+			this.marker = !this.marker;
+		},
+	},
+};
 </script>
 
 <style></style>
