@@ -11,10 +11,10 @@
 		<v-table class="mx-10">
 			<thead>
 				<tr>
-					<th class="text-left">Nome</th>
-					<th class="text-left">Preço</th>
-					<th class="text-left">Cor</th>
-					<th class="text-left">Marca</th>
+					<th class="text-left font-weight-black">Nome</th>
+					<th class="text-left font-weight-black">Preço</th>
+					<th class="text-left font-weight-black">Cor</th>
+					<th class="text-left font-weight-black">Marca</th>
 					<th>Ações</th>
 				</tr>
 			</thead>
