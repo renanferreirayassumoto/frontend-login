@@ -81,7 +81,7 @@ export default {
 	methods: {
 		cadastrar() {
 			axios
-				.post('http://localhost:3000/users', {
+				.post('https://sistema-produtos-backend.onrender.com/users', {
 					username: this.username,
 					email: this.email,
 					password: this.password,

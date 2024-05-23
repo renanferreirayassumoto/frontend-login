@@ -40,7 +40,7 @@ export default {
 
 		try {
 			const response = await axios.get(
-				`http://localhost:3000/users/${user.sub}`,
+				`https://sistema-produtos-backend.onrender.com/users/${user.sub}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('access_token')}`,

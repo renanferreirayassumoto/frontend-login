@@ -76,10 +76,13 @@ export default {
 	methods: {
 		async login() {
 			try {
-				const response = await axios.post('http://localhost:3000/login', {
-					email: this.email,
-					password: this.password,
-				});
+				const response = await axios.post(
+					'https://sistema-produtos-backend.onrender.com/login',
+					{
+						email: this.email,
+						password: this.password,
+					}
+				);
 
 				const accessToken = response.data.access_token;
 				localStorage.setItem('access_token', accessToken);

@@ -147,7 +147,7 @@ export default {
 	methods: {
 		fetchItems() {
 			axios
-				.get('http://localhost:3000/products')
+				.get('https://sistema-produtos-backend.onrender.com/products')
 				.then((response) => {
 					this.items = response.data;
 				})
@@ -161,7 +161,7 @@ export default {
 		},
 		deletar(id) {
 			axios
-				.delete(`http://localhost:3000/products/${id}`)
+				.delete(`https://sistema-produtos-backend.onrender.com/products/${id}`)
 				.then(() => {
 					this.alertDeletedComponentConsulta = true;
 					setTimeout(() => {
@@ -183,7 +183,7 @@ export default {
 			const priceAsNumber = Number(price);
 
 			axios
-				.patch(`http://localhost:3000/products/${id}`, {
+				.patch(`https://sistema-produtos-backend.onrender.com/products/${id}`, {
 					name: name,
 					price: priceAsNumber,
 					color: color,
@@ -213,7 +213,7 @@ export default {
 			const { name, price, color, brand } = this.newItem;
 
 			axios
-				.post('http://localhost:3000/products', {
+				.post('https://sistema-produtos-backend.onrender.com/products', {
 					name: name,
 					price: priceAsNumber,
 					color: color,
